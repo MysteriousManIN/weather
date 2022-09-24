@@ -196,6 +196,8 @@ $(()=>{
             
         }
 
+        console.log(weather_data);
+
         displayCurrentWeather();
         displayForecast(0);
         displayDayCards();
