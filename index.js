@@ -29,7 +29,7 @@ $(()=>{
         let i, list = [];
 
         for(i = 0 ; i < nod ; i++){
-            let [ m, d, y ] = date.toLocaleDateString().split("/");
+            let [ m, d, y ] = [ date.getMonth() + 1, date.getDate(), date.getFullYear() ];
             list.push(`${y}-${m}-${d}`);
             date.setDate(date.getDate() + 1);
         }
