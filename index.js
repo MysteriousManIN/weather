@@ -213,12 +213,14 @@ $(()=>{
         $("#hf-range-scale").append($("<span>",{ point:p }));
     }
 
-    window.navigator.geolocation.getCurrentPosition(({ coords })=>{
+    /* window.navigator.geolocation.getCurrentPosition(({ coords })=>{
 
         let { latitude:lat, longitude:long } = coords;
 
         displayWeather(`${lat},${long}`);
 
-    });
+    }); */
+
+    displayWeather("Mathura");
 
 });
