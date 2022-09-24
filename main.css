@@ -1,0 +1,84 @@
+@import "https://fontfamilies.com/0/typeface/css/?display=swap&family=Hero+New";
+
+:root{
+
+    --ff_p: "Hero New";
+
+    --fs_0: 8px;
+    --fs_1: 10px;
+    --fs_2: 12px;
+    --fs_3: 14px;
+    --fs_4: 16px;
+    --fs_5: 18px;
+    --fs_6: 20px;
+    --fs_7: 22px;
+    --fs_8: 24px;
+
+    --hs_0: 32px;
+    --hs_1: 24px;
+    --hs_2: 20px;
+    --hs_3: 16px;
+    --hs_4: 14px;
+    --hs_5: 10px;
+
+    --hght_0: 40px;
+    --hght_1: 44px;
+    --hght_2: 48px; 
+    --hght_3: 56px;
+    --hght_4: 64px;
+
+    --c_0_0: hsl(0 0% 98%);
+    --c_0_1: hsl(0 0% 95%);
+    --c_0_2: hsl(0 0% 88%);
+    --c_0_3: hsl(0 0% 50%);
+
+    --c_f0: hsl(0 0% 12%);
+    --c_f1: hsl(0 0% 98%);
+
+    --c_w: #FFF;
+    --c_b: #000;
+    --c_t: #0000;
+
+}
+
+html{
+    -webkit-tap-highlight-color:transparent;
+}
+
+html::-webkit-scrollbar{
+    width:8px;
+    height:0;
+    background-color:var(--c_0_0);
+}
+
+html::-webkit-scrollbar-thumb{
+    width:8px;
+    border-top:4px solid var(--c_0_0);
+    border-right:4px solid var(--c_0_0);
+    border-bottom:4px solid var(--c_0_0);
+    background-color:var(--c_f0);
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+}
+
+#preloader{
+    user-select: none;
+    height:100vh;
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    background-color:var(--c_0_0);
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1000;
+}
+
+#preloader ~ *{
+    display:none;
+}

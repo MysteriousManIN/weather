@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" >
+    <meta name="description" content="Weather forecast application" >
+    <meta name="author" content="Chetan Saini" >
+    <title>Weather</title>
+    <link rel="stylesheet" href="index.css" >
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer ></script> -->
+    <script src="https://cdn.com/google/google_jquery.min.js" defer ></script>
+    <script src="index.js" defer ></script>
+</head>
+<body>
+
+    <div id="preloader" >Loading...</div>
+
+    <main>
+
+        <section class="cw_section" >
+
+            <div id="location" class="location" >
+                <h1>Location</h1>
+                <span>Super location</span>
+            </div>
+
+            <div class="cw" >
+                <div>
+                    <div id="cw-img" ></div>
+                    <div>
+                        <span id="cw-temp" >00</span>
+                        <span>&deg; C</span>
+                    </div>
+                </div>
+                <div>
+                    <span id="cw-name" >Weather</span>
+                    <span>Feelslike <span id="cw-feelslike" >00</span><sup>&deg;</sup></span>
+                </div>
+                <div id="cw-dt" >Today, 00:00 AM</div>
+            </div>
+
+            <div id="cw-details" class="cw_details" >
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+            </div>
+
+        </section>
+
+        <section class="hf-section" >
+
+            <h2>Hourly forecast</h2>
+
+            <span id="hf-dt" >At 00:00 AM</span>
+            <div class="hf">
+                <div id="hf-img" ></div>
+                <div>
+                    <span id="hf-temp" >00</span>
+                    <span>&deg; C</span>
+                </div>
+                <div>
+                    <span id="hf-name" >Weather</span>
+                    <span>Feelslike <span id="hf-feelslike" >00</span><sup>&deg;</sup></span>
+                </div>
+            </div>
+
+            <div id="hf-details" class="hf_details" >
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+                <div><span>00 %</span><span>Humidity</span></div>
+            </div>
+
+            <div id="hf-details-1" class="hf_details_1" >
+                <div></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+                <div><span>00:00 AM</span><span>Sunrise</span></div>
+            </div>
+
+            <div class="hf_range">
+                <div id="hf-range-scale" ></div>
+                <input id="hf-range" type="range" min="0" max="23" value="1" />
+            </div>    
+
+        </section>
+
+        <section class="days">
+
+            <h2>Days</h2>
+            <div id="day-cards" class="day_cards" >
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+                <div><span>00 Mon</span><div></div><span>00/00</span></div>
+            </div>
+
+        </section>
+
+    </main>  
+    
+</body>
+</html>
