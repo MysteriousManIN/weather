@@ -261,7 +261,7 @@ $(()=>{
                 res.forEach(v=>{
 
                     let { name, region, country, url } = v;
-                    let div = $("<div>").text([name, region, country].join(", "));
+                    let div = $("<div>", { class:"truncate_string" }).text([name, region, country].join(", "));
 
                     div.on("click", ()=>{
 
