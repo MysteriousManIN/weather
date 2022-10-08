@@ -2,8 +2,15 @@
 
 $(()=>{
 
+    let weather_data;
+
     const API_KEY = "3d41c81e06e54f5c86924343222708", BASE_URL = "https://api.weatherapi.com/v1/";
     const _fetch = async (url) => { return await (await fetch(url)).json(); };
+
+    const weatherAPIs = {
+        search: (q) =>{ return _fetch(BASE_URL + `search.json?key=${API_KEY}&q=${q}`); },
+        forecast : (location, date) => { return _fetch(BASE_URL + `forecast.json?key=${API_KEY}&aqi=yes&q=${location}&dt=${date}`); }
+    };
 
     const AQI = {
         usEpaIndex: (val) => {
@@ -18,9 +25,23 @@ $(()=>{
         }
     };
 
-    const weatherAPIs = {
-        search: (q) =>{ return _fetch(BASE_URL + `search.json?key=${API_KEY}&q=${q}`); },
-        forecast : (location, date) => { return _fetch(BASE_URL + `forecast.json?key=${API_KEY}&aqi=yes&q=${location}&dt=${date}`); }
+    const simplifyDateTime = (dt) => { // dt = YYYY-MM-DD HH:MM:SS
+
+        dt = new Date(dt);
+    
+        let [ ds, ms, d, y, t ] = dt.toString().split(" "), [ h, m ] = t.split(":"),
+        res = {
+            date: d,
+            year: y,
+            hours: h > 12 ? "0" + (h - 12) : h,
+            minutes: m,
+            day_shortname: ds,
+            month_shortname: ms,
+            am_pm: h >= 12 ? "PM" : "AM"
+        };
+        
+        return res;
+    
     };
 
     const dateList = (nod = 1) => {
@@ -44,19 +65,13 @@ $(()=>{
 
     };
 
-    let weather_data = { location:null, current:null, forecastDays: [] };
-
-    function displayCurrentWeather(){
+    const displayCurrentWeather = () => {
 
         const { location, current } = weather_data;
         let { country, name, region } = location,
             { temp_c, feelslike_c, last_updated, humidity, precip_mm, uv, wind_degree, wind_kph, cloud, vis_km } = current,
-            { icon, text } = current.condition;
-
-        last_updated = new Date(last_updated);
-        let [ dayname, monthname, date ] = last_updated.toDateString().split(" "),
-            [ time, am_pm ] = last_updated.toLocaleTimeString().split(" "),
-            [ hours, minutes ] = time.split(":");
+            { icon, text } = current.condition,
+            { hours, minutes, am_pm  } = simplifyDateTime(last_updated);
 
         icon = icon.replace("64x64", "128x128");
 
@@ -85,20 +100,16 @@ $(()=>{
 
     }
 
-    function displayForecast(dnum){
+    const displayForecast = (dnum) => {
 
         const { astro, day, hour } = weather_data.forecastDays[dnum];
         let { sunrise, sunset, moonrise, moonset } = astro;
 
         const displayHourly = (h) => {
 
-            let { temp_c, humidity, precip_mm, wind_kph, wind_degree, uv, cloud, vis_km, feelslike_c, chance_of_rain, chance_of_snow, condition, time:datetime  } = hour[h],
-                { icon, text } = condition;
-
-            datetime = new Date(datetime);
-            let [ dayname, monthname, date ] = datetime.toDateString().split(" "),
-                [ time, am_pm ] = datetime.toLocaleTimeString().split(" "),
-                [ hours, minutes ] = time.split(":");
+            let { temp_c, humidity, precip_mm, wind_kph, wind_degree, uv, cloud, vis_km, feelslike_c, chance_of_rain, chance_of_snow, condition, time } = hour[h],
+                { icon, text } = condition,
+                { day_shortname, month_shortname, date, hours, minutes, am_pm  } = simplifyDateTime(time);
 
             icon = icon.replace("64x64", "128x128");
 
@@ -121,7 +132,7 @@ $(()=>{
                 "Snow chance": chance_of_snow + " %",
             };
 
-            $("#hf-dt").text(`At ${dayname} ${date} ${monthname}, ${hours}:${minutes} ${am_pm}`);
+            $("#hf-dt").text(`At ${day_shortname} ${date} ${month_shortname}, ${hours}:${minutes} ${am_pm}`);
             $("#hf-img").css({ "background-image": `url("https:${icon}")` });
             $("#hf-temp").text(Math.round(temp_c));
             $("#hf-name").text(text);
@@ -152,7 +163,7 @@ $(()=>{
 
     }
 
-    function displayDayCards(){
+    const displayDayCards = () => {
 
         $("#day-cards").html("");
         weather_data.forecastDays.forEach((f, i)=>{
@@ -160,7 +171,7 @@ $(()=>{
             let { date, day } = f,
                 { mintemp_c, maxtemp_c, condition  } = day,
                 { icon } = condition,
-                [ , m, d ] =  (new Date(date)).toDateString().split(" ");
+                { month_shortname:m, date:d } =  simplifyDateTime(date);
 
             let card = $("<div>").append(
                 $("<span>").text(`${d} ${m}`),
@@ -180,9 +191,11 @@ $(()=>{
 
     }
 
-    async function displayWeather(location){
+    const displayWeather = async (location) => {
 
-        for(let date of dateList(14)){
+        weather_data = { location:null, current:null, forecastDays: [] };
+
+        for(let date of dateList(7)){
 
             let res = await weatherAPIs.forecast(location, date);
             if(res){
@@ -202,6 +215,7 @@ $(()=>{
         displayForecast(0);
         displayDayCards();
 
+        $("#fetching").removeClass("active");
         removePreloader();
 
     }
@@ -215,13 +229,59 @@ $(()=>{
         $("#hf-range-scale").append($("<span>",{ point:p }));
     }
 
-    /* window.navigator.geolocation.getCurrentPosition(({ coords })=>{
+    $("#search-bar > button").on("click", ()=>{
 
-        let { latitude:lat, longitude:long } = coords;
+        $("#search-bar").toggleClass("active");
+        $("main").toggleClass("show-search-bar");
 
-        displayWeather(`${lat},${long}`);
+        if($("#search-bar").hasClass("active")){
+            $("#search-bar > input").focus();
+            $("#search-bar > button").text("close");
+        }else{
+            $("#search-result").html("");
+            $("#search-bar > input").val("");
+            $("#search-bar > button").text("search-2");
+        }
 
-    }); */
+    });
+
+    let searching;
+    $("#search-bar > input").on("input", ()=>{
+
+        if(searching) window.clearTimeout(searching);
+
+        searching = window.setTimeout(async ()=>{
+            
+            let val = $("#search-bar > input").val().trim();
+            if(val.length > 2){
+
+                let res = await weatherAPIs.search(val);
+
+                $("#search-result").html("");
+                res.forEach(v=>{
+
+                    let { name, region, country, url } = v;
+                    let div = $("<div>").text([name, region, country].join(", "));
+
+                    div.on("click", ()=>{
+
+                        $("#fetching").addClass("active");
+                        $("#search-bar > button").click();
+                        displayWeather(url);
+
+                    });
+
+                    $("#search-result").append(div);
+
+                });
+
+            }else{
+                $("#search-result").html("");
+            }
+
+        }, 500);
+
+    });
 
     displayWeather("Mathura");
 
